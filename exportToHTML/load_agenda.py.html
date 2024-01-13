@@ -1,0 +1,77 @@
+<html>
+<head>
+<title>load_agenda.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #7a7e85;}
+.s4 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+load_agenda.py</font>
+</center></td></tr></table>
+<pre><span class="s0">import </span><span class="s1">datetime</span>
+<span class="s0">import </span><span class="s1">pandas </span><span class="s0">as </span><span class="s1">pd</span>
+
+<span class="s1">current_time </span><span class="s2">= </span><span class="s1">datetime</span><span class="s2">.</span><span class="s1">datetime</span><span class="s2">.</span><span class="s1">now</span><span class="s2">()</span>
+<span class="s1">current_hour</span><span class="s2">, </span><span class="s1">current_minute </span><span class="s2">= </span><span class="s1">datetime</span><span class="s2">.</span><span class="s1">datetime</span><span class="s2">.</span><span class="s1">time</span><span class="s2">(</span><span class="s1">current_time</span><span class="s2">).</span><span class="s1">hour</span><span class="s2">, </span><span class="s1">datetime</span><span class="s2">.</span><span class="s1">datetime</span><span class="s2">.</span><span class="s1">time</span><span class="s2">(</span><span class="s1">current_time</span><span class="s2">).</span><span class="s1">minute</span>
+<span class="s3">#print('current hour:', current_hour)</span>
+<span class="s3">#print('Current minute:', current_minute)</span>
+<span class="s1">current_date </span><span class="s2">= </span><span class="s1">datetime</span><span class="s2">.</span><span class="s1">datetime</span><span class="s2">.</span><span class="s1">date</span><span class="s2">(</span><span class="s1">datetime</span><span class="s2">.</span><span class="s1">datetime</span><span class="s2">.</span><span class="s1">today</span><span class="s2">())</span>
+<span class="s3">#print('Current Date:', current_date)</span>
+
+<span class="s1">agenda_worksheet </span><span class="s2">= </span><span class="s4">&quot;C:/Users/yskor/virtual_assistant/voice_asistant_2/agenda.xlsx&quot;</span>
+<span class="s1">agenda </span><span class="s2">= </span><span class="s1">pd</span><span class="s2">.</span><span class="s1">read_excel</span><span class="s2">(</span><span class="s1">agenda_worksheet</span><span class="s2">)</span>
+<span class="s3">#print(agenda)</span>
+
+<span class="s1">description</span><span class="s2">, </span><span class="s1">responsible</span><span class="s2">, </span><span class="s1">hour_agenda </span><span class="s2">= [], [], []</span>
+<span class="s0">for </span><span class="s1">index</span><span class="s2">, </span><span class="s1">row </span><span class="s0">in </span><span class="s1">agenda</span><span class="s2">.</span><span class="s1">iterrows</span><span class="s2">():</span>
+    <span class="s3">#print(index)</span>
+    <span class="s3">#print(row)</span>
+    <span class="s1">date </span><span class="s2">= </span><span class="s1">datetime</span><span class="s2">.</span><span class="s1">datetime</span><span class="s2">.</span><span class="s1">date</span><span class="s2">(</span><span class="s1">row</span><span class="s2">[</span><span class="s4">'date'</span><span class="s2">])</span>
+    <span class="s3">#print(date)</span>
+    <span class="s1">complete_hour </span><span class="s2">= </span><span class="s1">datetime</span><span class="s2">.</span><span class="s1">datetime</span><span class="s2">.</span><span class="s1">strptime</span><span class="s2">(</span><span class="s1">str</span><span class="s2">(</span><span class="s1">row</span><span class="s2">[</span><span class="s4">'hour'</span><span class="s2">]), </span><span class="s4">'%H:%M:%S'</span><span class="s2">)</span>
+    <span class="s3">#print(complete_hour)</span>
+    <span class="s1">hour </span><span class="s2">= </span><span class="s1">datetime</span><span class="s2">.</span><span class="s1">datetime</span><span class="s2">.</span><span class="s1">time</span><span class="s2">(</span><span class="s1">complete_hour</span><span class="s2">).</span><span class="s1">hour</span>
+    <span class="s3">#print(hour)</span>
+
+    <span class="s0">if </span><span class="s1">current_date </span><span class="s2">== </span><span class="s1">date</span><span class="s2">:</span>
+        <span class="s0">if </span><span class="s1">hour </span><span class="s2">&gt;= </span><span class="s1">current_time</span><span class="s2">:</span>
+            <span class="s1">description</span><span class="s2">.</span><span class="s1">append</span><span class="s2">(</span><span class="s1">row</span><span class="s2">[</span><span class="s4">'description'</span><span class="s2">])</span>
+            <span class="s1">responsible</span><span class="s2">.</span><span class="s1">append</span><span class="s2">(</span><span class="s1">row</span><span class="s2">[</span><span class="s4">'responsible'</span><span class="s2">])</span>
+            <span class="s1">hour_agenda</span><span class="s2">.</span><span class="s1">append</span><span class="s2">(</span><span class="s1">row</span><span class="s2">[</span><span class="s4">'hour'</span><span class="s2">])</span>
+
+<span class="s3">#print(description)</span>
+<span class="s3">#print(responsible)</span>
+<span class="s3">#print(hour_agenda)</span>
+
+<span class="s0">def </span><span class="s1">load_agenda</span><span class="s2">():</span>
+    <span class="s0">if </span><span class="s1">description</span><span class="s2">:</span>
+        <span class="s0">return </span><span class="s1">description</span><span class="s2">, </span><span class="s1">responsible</span><span class="s2">, </span><span class="s1">hour_agenda</span>
+    <span class="s0">else</span><span class="s2">:</span>
+        <span class="s0">return False</span>
+
+<span class="s3">#print(load_agenda())</span>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</body>
+</html>
